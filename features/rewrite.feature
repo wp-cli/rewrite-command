@@ -71,18 +71,6 @@ Feature: Manage WordPress rewrites
     And the return code should be 0
     And STDERR should be empty
 
-  Scenario: Generate .htaccess on hard flush with a global config
-    Given a WP install
-    And a config.yml file:
-      """
-      apache_modules: [mod_rewrite]
-      """
-
-    When I run `WP_CLI_CONFIG_PATH=config.yml wp rewrite structure /%year%/%monthnum%/%day%/%postname%/ --hard`
-    Then the .htaccess file should exist
-    And the return code should be 0
-    And STDERR should be empty
-
   Scenario: Error when trying to generate .htaccess on a multisite install
     Given a WP multisite install
     And a wp-cli.yml file:
