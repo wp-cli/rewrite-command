@@ -20,7 +20,9 @@
         "psr-4": {
             "": "src/"
         },
-        "files": [ "rewrite-command.php" ]
+        "files": [
+            "rewrite-command.php"
+        ]
     },
     "require": {},
     "require-dev": {
@@ -35,6 +37,7 @@
             "rewrite flush",
             "rewrite list",
             "rewrite structure"
-        ]
+        ],
+        "bundled": true
     }
 }
