@@ -102,7 +102,7 @@ class Rewrite_Command extends WP_CLI_Command {
 	 *
 	 * ## EXAMPLES
 	 *
-	 *     $ wp rewrite structure '/%year%/%monthnum%/%postname%'
+	 *     $ wp rewrite structure '/%year%/%monthnum%/%postname%/'
 	 *     Success: Rewrite structure set.
 	 */
 	public function structure( $args, $assoc_args ) {
@@ -334,4 +334,3 @@ class Rewrite_Command extends WP_CLI_Command {
 }
 
 WP_CLI::add_command( 'rewrite', 'Rewrite_Command' );
-
