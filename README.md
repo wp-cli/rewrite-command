@@ -119,7 +119,7 @@ apache_modules:
 
 **EXAMPLES**
 
-    $ wp rewrite structure '/%year%/%monthnum%/%postname%'
+    $ wp rewrite structure '/%year%/%monthnum%/%postname%/'
     Success: Rewrite structure set.
 
 ## Installing
