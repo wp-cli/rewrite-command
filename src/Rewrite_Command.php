@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Manage rewrite rules.
+ *  Perform on the .htaccess file and flushes the site's rewrite rules, updates the permalink structure.
  *
  * ## EXAMPLES
  *
