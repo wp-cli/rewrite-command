@@ -104,22 +104,23 @@ Feature: Manage WordPress rewrites
   Scenario: Warn the user when --skip-plugins or --skip-themes is used
     Given a WP install
 
-    When I run `wp --skip-plugins rewrite flush`
+    When I try `wp --skip-plugins rewrite flush`
     Then STDERR should contain:
       """
       Warning: Some rewrite rules may be missing because plugins weren't loaded.
       """
     And the return code should be 0
 
-    When I run `wp --skip-plugins --skip-themes rewrite flush`
+    When I try `wp --skip-plugins --skip-themes rewrite flush`
     Then STDERR should contain:
       """
       Warning: Some rewrite rules may be missing because plugins and themes weren't loaded.
       """
     And the return code should be 0
 
-    When I run `wp rewrite flush`
+    When I try `wp rewrite flush`
     Then STDERR should not contain:
       """
       Warning: Some rewrite rules may be missing
       """
+    And the return code should be 0
