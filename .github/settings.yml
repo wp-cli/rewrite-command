@@ -1,0 +1,20 @@
+# Used by Probot Settings: https://probot.github.io/apps/settings/
+repository:
+  description: Manage rewrite rules.
+  labels:
+    - name: scope:documentation
+      color: 0e8a16
+    - name: scope:testing
+      color: 5319e7
+    - name: good-first-issue
+      color: eb6420
+    - name: state:unconfirmed
+      color: bfe5bf
+    - name: state:unsupported
+      color: bfe5bf
+    - name: command:rewrite-flush
+      color: c5def5
+    - name: command:rewrite-list
+      color: c5def5
+    - name: command:rewrite-structure
+      color: c5def5
