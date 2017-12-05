@@ -30,7 +30,7 @@
 class Rewrite_Command extends WP_CLI_Command {
 
 	/**
-	 * Flush rewrite rules.
+	 * Flushes rewrite rules.
 	 *
 	 * Resets WordPress' rewrite rules based on registered post types, etc.
 	 *
@@ -76,7 +76,7 @@ class Rewrite_Command extends WP_CLI_Command {
 	}
 
 	/**
-	 * Update the permalink structure.
+	 * Updates the permalink structure.
 	 *
 	 * Sets the post permalink structure to the specified pattern.
 	 *
@@ -170,7 +170,7 @@ class Rewrite_Command extends WP_CLI_Command {
 	}
 
 	/**
-	 * Get a list of the current rewrite rules.
+	 * Gets a list of the current rewrite rules.
 	 *
 	 * ## OPTIONS
 	 *
@@ -275,7 +275,7 @@ class Rewrite_Command extends WP_CLI_Command {
 	}
 
 	/**
-	 * Expose apache modules if present in config
+	 * Exposes apache modules if present in config
 	 *
 	 * Implementation Notes: This function exposes a global function
 	 * apache_get_modules and also sets the $is_apache global variable.
@@ -315,7 +315,7 @@ class Rewrite_Command extends WP_CLI_Command {
 	}
 
 	/**
-	 * Display a warning if --skip-plugins or --skip-themes are in use.
+	 * Displays a warning if --skip-plugins or --skip-themes are in use.
 	 *
 	 * Skipping the loading of plugins or themes can mean some rewrite rules
 	 * are unregistered, which may cause erroneous behavior.
