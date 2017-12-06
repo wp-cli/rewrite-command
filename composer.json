@@ -1,6 +1,6 @@
 {
     "name": "wp-cli/rewrite-command",
-    "description": "Manage rewrite rules.",
+    "description": "Lists or flushes the site's rewrite rules, updates the permalink structure.",
     "type": "wp-cli-package",
     "homepage": "https://github.com/wp-cli/rewrite-command",
     "support": {
@@ -34,6 +34,7 @@
             "dev-master": "1.x-dev"
         },
         "commands": [
+            "rewrite",
             "rewrite flush",
             "rewrite list",
             "rewrite structure"

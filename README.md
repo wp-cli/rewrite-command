@@ -1,7 +1,7 @@
 wp-cli/rewrite-command
 ======================
 
-Manage rewrite rules.
+Lists or flushes the site's rewrite rules, updates the permalink structure.
 
 [![Build Status](https://travis-ci.org/wp-cli/rewrite-command.svg?branch=master)](https://travis-ci.org/wp-cli/rewrite-command)
 
@@ -11,9 +11,41 @@ Quick links: [Using](#using) | [Installing](#installing) | [Contributing](#contr
 
 This package implements the following commands:
 
+### wp rewrite
+
+Lists or flushes the site's rewrite rules, updates the permalink structure.
+
+~~~
+wp rewrite
+~~~
+
+See the WordPress [Rewrite API](https://codex.wordpress.org/Rewrite_API) and 
+[WP Rewrite](https://codex.wordpress.org/Class_Reference/WP_Rewrite) class reference.
+
+**EXAMPLES**
+
+    # Flush rewrite rules
+    $ wp rewrite flush
+    Success: Rewrite rules flushed.
+
+    # Update permalink structure
+    $ wp rewrite structure '/%year%/%monthnum%/%postname%'
+    Success: Rewrite structure set.
+
+    # List rewrite rules
+    $ wp rewrite list --format=csv
+    match,query,source
+    ^wp-json/?$,index.php?rest_route=/,other
+    ^wp-json/(.*)?,index.php?rest_route=/$matches[1],other
+    category/(.+?)/feed/(feed|rdf|rss|rss2|atom)/?$,index.php?category_name=$matches[1]&feed=$matches[2],category
+    category/(.+?)/(feed|rdf|rss|rss2|atom)/?$,index.php?category_name=$matches[1]&feed=$matches[2],category
+    category/(.+?)/embed/?$,index.php?category_name=$matches[1]&embed=true,category
+
+
+
 ### wp rewrite flush
 
-Flush rewrite rules.
+Flushes rewrite rules.
 
 ~~~
 wp rewrite flush [--hard]
@@ -43,7 +75,7 @@ apache_modules:
 
 ### wp rewrite list
 
-Get a list of the current rewrite rules.
+Gets a list of the current rewrite rules.
 
 ~~~
 wp rewrite list [--match=<url>] [--source=<source>] [--fields=<fields>] [--format=<format>]
@@ -86,7 +118,7 @@ wp rewrite list [--match=<url>] [--source=<source>] [--fields=<fields>] [--forma
 
 ### wp rewrite structure
 
-Update the permalink structure.
+Updates the permalink structure.
 
 ~~~
 wp rewrite structure <permastruct> [--category-base=<base>] [--tag-base=<base>] [--hard]
