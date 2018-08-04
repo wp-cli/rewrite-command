@@ -1,11 +1,8 @@
 {
     "name": "wp-cli/rewrite-command",
-    "description": "Lists or flushes the site's rewrite rules, updates the permalink structure.",
     "type": "wp-cli-package",
+    "description": "Lists or flushes the site's rewrite rules, updates the permalink structure.",
     "homepage": "https://github.com/wp-cli/rewrite-command",
-    "support": {
-        "issues": "https://github.com/wp-cli/rewrite-command/issues"
-    },
     "license": "MIT",
     "authors": [
         {
@@ -14,8 +11,29 @@
             "homepage": "https://runcommand.io"
         }
     ],
-    "minimum-stability": "dev",
-    "prefer-stable": true,
+    "require": {
+        "wp-cli/wp-cli": "^2"
+    },
+    "require-dev": {
+        "wp-cli/entity-command": "^1.3",
+        "wp-cli/wp-cli-tests": "^0"
+    },
+    "config": {
+        "sort-packages": true,
+        "process-timeout": 7200
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.x-dev"
+        },
+        "bundled": true,
+        "commands": [
+            "rewrite",
+            "rewrite flush",
+            "rewrite list",
+            "rewrite structure"
+        ]
+    },
     "autoload": {
         "psr-4": {
             "": "src/"
@@ -24,21 +42,22 @@
             "rewrite-command.php"
         ]
     },
-    "require": {},
-    "require-dev": {
-        "behat/behat": "~2.5",
-        "wp-cli/wp-cli": "*"
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "scripts": {
+        "behat": "run-behat-tests",
+        "lint": "run-linter-tests",
+        "phpcs": "run-phpcs-tests",
+        "phpunit": "run-php-unit-tests",
+        "prepare-tests": "install-package-tests",
+        "test": [
+            "@lint",
+            "@phpcs",
+            "@phpunit",
+            "@behat"
+        ]
     },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "1.x-dev"
-        },
-        "commands": [
-            "rewrite",
-            "rewrite flush",
-            "rewrite list",
-            "rewrite structure"
-        ],
-        "bundled": true
+    "support": {
+        "issues": "https://github.com/wp-cli/rewrite-command/issues"
     }
 }
