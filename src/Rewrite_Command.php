@@ -3,7 +3,7 @@
 /**
  * Lists or flushes the site's rewrite rules, updates the permalink structure.
  *
- * See the WordPress [Rewrite API](https://codex.wordpress.org/Rewrite_API) and 
+ * See the WordPress [Rewrite API](https://codex.wordpress.org/Rewrite_API) and
  * [WP Rewrite](https://codex.wordpress.org/Class_Reference/WP_Rewrite) class reference.
  *
  * ## EXAMPLES
@@ -148,6 +148,8 @@ class Rewrite_Command extends WP_CLI_Command {
 		// make sure we detect mod_rewrite if configured in apache_modules in config
 		self::apache_modules();
 
+		WP_CLI::success( "Rewrite structure set." );
+
 		// Launch a new process to flush rewrites because core expects flush
 		// to happen after rewrites are set
 		$new_assoc_args = array();
@@ -165,8 +167,6 @@ class Rewrite_Command extends WP_CLI_Command {
 			// Strip "Warning: "
 			WP_CLI::warning( substr( $process_run->stderr, 9 ) );
 		}
-
-		WP_CLI::success( "Rewrite structure set." );
 	}
 
 	/**
