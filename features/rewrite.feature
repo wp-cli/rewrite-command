@@ -96,8 +96,8 @@ Feature: Manage WordPress rewrites
       """
     And STDOUT should be:
       """
-      Success: Rewrite rules flushed.
       Success: Rewrite structure set.
+      Success: Rewrite rules flushed.
       """
     And the return code should be 0
 
