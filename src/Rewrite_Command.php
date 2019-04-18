@@ -311,6 +311,7 @@ class Rewrite_Command extends WP_CLI_Command {
 		$mods = WP_CLI::get_config( 'apache_modules' );
 		if ( ! empty( $mods ) && ! function_exists( 'apache_get_modules' ) ) {
 			global $is_apache;
+			// phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 			$is_apache = true;
 
 			// needed for get_home_path() and .htaccess location
