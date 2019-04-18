@@ -27,6 +27,7 @@
  *
  * @package wp-cli
  */
+// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound -- for back compat this class shouldn't be renamed.
 class Rewrite_Command extends WP_CLI_Command {
 
 	/**
