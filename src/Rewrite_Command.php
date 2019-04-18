@@ -113,12 +113,12 @@ class Rewrite_Command extends WP_CLI_Command {
 
 		// copypasta from /wp-admin/options-permalink.php
 
-		$prefix = $blog_prefix = '';
+		$prefix = $blog_prefix = ''; // phpcs:ignore
 		if ( is_multisite() && ! is_subdomain_install() && is_main_site() ) {
 			$blog_prefix = '/blog';
 		}
 
-		$permalink_structure = ( $args[0] == 'default' ) ? '' : $args[0];
+		$permalink_structure = ( 'default' == $args[0] ) ? '' : $args[0];
 
 		if ( ! empty( $permalink_structure ) ) {
 			$permalink_structure = preg_replace( '#/+#', '/', '/' . str_replace( '#', '', $permalink_structure ) );
