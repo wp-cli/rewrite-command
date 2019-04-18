@@ -250,8 +250,10 @@ class Rewrite_Command extends WP_CLI_Command {
 
 		// Apply the filters used in core just in case
 		foreach ( $rewrite_rules_by_source as $source => $source_rules ) {
+			// phpcs:ignore WordPress.NamingConventions,PrefixAllGlobals.DynamicHooknameFound
 			$rewrite_rules_by_source[ $source ] = apply_filters( $source . '_rewrite_rules', $source_rules );
 			if ( 'post_tag' == $source ) {
+				// phpcs:ignore WordPress.NamingConventions,PrefixAllGlobals.DynamicHooknameFound
 				$rewrite_rules_by_source[ $source ] = apply_filters( 'tag_rewrite_rules', $source_rules );
 			}
 		}
