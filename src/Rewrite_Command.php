@@ -57,7 +57,7 @@ class Rewrite_Command extends WP_CLI_Command {
 		self::apache_modules();
 
 		if ( \WP_CLI\Utils\get_flag_value( $assoc_args, 'hard' ) && ! in_array( 'mod_rewrite', (array) WP_CLI::get_config( 'apache_modules' ) ) ) {
-			WP_CLI::warning( "Regenerating a .htaccess file requires special configuration. See usage docs." );
+			WP_CLI::warning( 'Regenerating a .htaccess file requires special configuration. See usage docs.' );
 		}
 
 		if ( \WP_CLI\Utils\get_flag_value( $assoc_args, 'hard' ) && is_multisite() ) {
@@ -152,7 +152,7 @@ class Rewrite_Command extends WP_CLI_Command {
 		// make sure we detect mod_rewrite if configured in apache_modules in config
 		self::apache_modules();
 
-		WP_CLI::success( "Rewrite structure set." );
+		WP_CLI::success( 'Rewrite structure set.' );
 
 		// Launch a new process to flush rewrites because core expects flush
 		// to happen after rewrites are set
@@ -162,7 +162,7 @@ class Rewrite_Command extends WP_CLI_Command {
 			$cmd                   .= ' --hard';
 			$new_assoc_args['hard'] = true;
 			if ( ! in_array( 'mod_rewrite', (array) WP_CLI::get_config( 'apache_modules' ) ) ) {
-				WP_CLI::warning( "Regenerating a .htaccess file requires special configuration. See usage docs." );
+				WP_CLI::warning( 'Regenerating a .htaccess file requires special configuration. See usage docs.' );
 			}
 		}
 
