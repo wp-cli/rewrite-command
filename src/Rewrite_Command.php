@@ -288,7 +288,7 @@ class Rewrite_Command extends WP_CLI_Command {
 	 * apache_get_modules and also sets the $is_apache global variable.
 	 *
 	 * This is so that flush_rewrite_rules will actually write out the
-	 * .htaccess file for apache wordpress installations. There is a check
+	 * .htaccess file for apache WordPress installations. There is a check
 	 * to see:
 	 *
 	 * 1. if the $is_apache variable is set.
