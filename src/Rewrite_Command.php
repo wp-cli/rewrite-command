@@ -113,7 +113,8 @@ class Rewrite_Command extends WP_CLI_Command {
 
 		// copypasta from /wp-admin/options-permalink.php
 
-		$prefix = $blog_prefix = ''; // phpcs:ignore
+		$blog_prefix = '';
+		$prefix      = $blog_prefix;
 		if ( is_multisite() && ! is_subdomain_install() && is_main_site() ) {
 			$blog_prefix = '/blog';
 		}
