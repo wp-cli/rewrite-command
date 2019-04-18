@@ -114,17 +114,19 @@ class Rewrite_Command extends WP_CLI_Command {
 		// copypasta from /wp-admin/options-permalink.php
 
 		$prefix = $blog_prefix = '';
-		if ( is_multisite() && !is_subdomain_install() && is_main_site() )
+		if ( is_multisite() && !is_subdomain_install() && is_main_site() ) {
 			$blog_prefix = '/blog';
+		}
 
 		$permalink_structure = ( $args[0] == 'default' ) ? '' : $args[0];
 
 		if ( ! empty( $permalink_structure ) ) {
 			$permalink_structure = preg_replace( '#/+#', '/', '/' . str_replace( '#', '', $permalink_structure ) );
-			if ( $prefix && $blog_prefix )
+			if ( $prefix && $blog_prefix ) {
 				$permalink_structure = $prefix . preg_replace( '#^/?index\.php#', '', $permalink_structure );
-			else
+			} else {
 				$permalink_structure = $blog_prefix . $permalink_structure;
+			}
 		}
 		$wp_rewrite->set_permalink_structure( $permalink_structure );
 
@@ -132,16 +134,18 @@ class Rewrite_Command extends WP_CLI_Command {
 		if ( isset( $assoc_args['category-base'] ) ) {
 
 			$category_base = $assoc_args['category-base'];
-			if ( ! empty( $category_base ) )
+			if ( ! empty( $category_base ) ) {
 				$category_base = $blog_prefix . preg_replace('#/+#', '/', '/' . str_replace( '#', '', $category_base ) );
+			}
 			$wp_rewrite->set_category_base( $category_base );
 		}
 
 		if ( isset( $assoc_args['tag-base'] ) ) {
 
 			$tag_base = $assoc_args['tag-base'];
-			if ( ! empty( $tag_base ) )
+			if ( ! empty( $tag_base ) ) {
 				$tag_base = $blog_prefix . preg_replace('#/+#', '/', '/' . str_replace( '#', '', $tag_base ) );
+			}
 			$wp_rewrite->set_tag_base( $tag_base );
 		}
 
@@ -247,16 +251,18 @@ class Rewrite_Command extends WP_CLI_Command {
 		// Apply the filters used in core just in case
 		foreach( $rewrite_rules_by_source as $source => $source_rules ) {
 			$rewrite_rules_by_source[$source] = apply_filters( $source . '_rewrite_rules', $source_rules );
-			if ( 'post_tag' == $source )
-				$rewrite_rules_by_source[$source] = apply_filters( 'tag_rewrite_rules', $source_rules );
+			if ( 'post_tag' == $source ) {
+				$rewrite_rules_by_source[ $source ] = apply_filters( 'tag_rewrite_rules', $source_rules );
+			}
 		}
 
 		$rule_list = array();
 		foreach ( $rules as $match => $query ) {
 
 			if ( ! empty( $assoc_args['match'] )
-				&& ! preg_match( "!^$match!", trim( $assoc_args['match'], '/' ) ) )
-				continue;
+				&& ! preg_match( "!^$match!", trim( $assoc_args['match'], '/' ) ) ) {
+					continue;
+				}
 
 			$source = 'other';
 			foreach( $rewrite_rules_by_source as $rules_source => $source_rules ) {
@@ -265,8 +271,9 @@ class Rewrite_Command extends WP_CLI_Command {
 				}
 			}
 
-			if ( ! empty( $assoc_args['source'] ) && $source != $assoc_args['source'] )
+			if ( ! empty( $assoc_args['source'] ) && $source != $assoc_args['source'] ) {
 				continue;
+			}
 
 			$rule_list[] = compact( 'match', 'query', 'source' );
 		}
