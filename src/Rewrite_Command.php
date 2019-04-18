@@ -114,7 +114,7 @@ class Rewrite_Command extends WP_CLI_Command {
 		// copypasta from /wp-admin/options-permalink.php
 
 		$prefix = $blog_prefix = '';
-		if ( is_multisite() && !is_subdomain_install() && is_main_site() ) {
+		if ( is_multisite() && ! is_subdomain_install() && is_main_site() ) {
 			$blog_prefix = '/blog';
 		}
 
@@ -135,7 +135,7 @@ class Rewrite_Command extends WP_CLI_Command {
 
 			$category_base = $assoc_args['category-base'];
 			if ( ! empty( $category_base ) ) {
-				$category_base = $blog_prefix . preg_replace('#/+#', '/', '/' . str_replace( '#', '', $category_base ) );
+				$category_base = $blog_prefix . preg_replace( '#/+#', '/', '/' . str_replace( '#', '', $category_base ) );
 			}
 			$wp_rewrite->set_category_base( $category_base );
 		}
@@ -144,7 +144,7 @@ class Rewrite_Command extends WP_CLI_Command {
 
 			$tag_base = $assoc_args['tag-base'];
 			if ( ! empty( $tag_base ) ) {
-				$tag_base = $blog_prefix . preg_replace('#/+#', '/', '/' . str_replace( '#', '', $tag_base ) );
+				$tag_base = $blog_prefix . preg_replace( '#/+#', '/', '/' . str_replace( '#', '', $tag_base ) );
 			}
 			$wp_rewrite->set_tag_base( $tag_base );
 		}
@@ -157,9 +157,9 @@ class Rewrite_Command extends WP_CLI_Command {
 		// Launch a new process to flush rewrites because core expects flush
 		// to happen after rewrites are set
 		$new_assoc_args = array();
-		$cmd = 'rewrite flush';
+		$cmd            = 'rewrite flush';
 		if ( \WP_CLI\Utils\get_flag_value( $assoc_args, 'hard' ) ) {
-			$cmd .= ' --hard';
+			$cmd                   .= ' --hard';
 			$new_assoc_args['hard'] = true;
 			if ( ! in_array( 'mod_rewrite', (array) WP_CLI::get_config( 'apache_modules' ) ) ) {
 				WP_CLI::warning( "Regenerating a .htaccess file requires special configuration. See usage docs." );
@@ -222,7 +222,7 @@ class Rewrite_Command extends WP_CLI_Command {
 
 		self::check_skip_plugins_themes();
 
-		$defaults = array(
+		$defaults   = array(
 			'source' => '',
 			'match'  => '',
 			'format' => 'table',
@@ -230,27 +230,27 @@ class Rewrite_Command extends WP_CLI_Command {
 		);
 		$assoc_args = array_merge( $defaults, $assoc_args );
 
-		$rewrite_rules_by_source = array();
-		$rewrite_rules_by_source['post'] = $wp_rewrite->generate_rewrite_rules( $wp_rewrite->permalink_structure, EP_PERMALINK );
-		$rewrite_rules_by_source['date'] = $wp_rewrite->generate_rewrite_rules( $wp_rewrite->get_date_permastruct(), EP_DATE );
-		$rewrite_rules_by_source['root'] = $wp_rewrite->generate_rewrite_rules( $wp_rewrite->root . '/', EP_ROOT );
+		$rewrite_rules_by_source             = array();
+		$rewrite_rules_by_source['post']     = $wp_rewrite->generate_rewrite_rules( $wp_rewrite->permalink_structure, EP_PERMALINK );
+		$rewrite_rules_by_source['date']     = $wp_rewrite->generate_rewrite_rules( $wp_rewrite->get_date_permastruct(), EP_DATE );
+		$rewrite_rules_by_source['root']     = $wp_rewrite->generate_rewrite_rules( $wp_rewrite->root . '/', EP_ROOT );
 		$rewrite_rules_by_source['comments'] = $wp_rewrite->generate_rewrite_rules( $wp_rewrite->root . $wp_rewrite->comments_base, EP_COMMENTS, true, true, true, false );
-		$rewrite_rules_by_source['search'] = $wp_rewrite->generate_rewrite_rules( $wp_rewrite->get_search_permastruct(), EP_SEARCH );
-		$rewrite_rules_by_source['author'] = $wp_rewrite->generate_rewrite_rules($wp_rewrite->get_author_permastruct(), EP_AUTHORS );
-		$rewrite_rules_by_source['page'] = $wp_rewrite->page_rewrite_rules();
+		$rewrite_rules_by_source['search']   = $wp_rewrite->generate_rewrite_rules( $wp_rewrite->get_search_permastruct(), EP_SEARCH );
+		$rewrite_rules_by_source['author']   = $wp_rewrite->generate_rewrite_rules( $wp_rewrite->get_author_permastruct(), EP_AUTHORS );
+		$rewrite_rules_by_source['page']     = $wp_rewrite->page_rewrite_rules();
 
 		// Extra permastructs including tags, categories, etc.
 		foreach ( $wp_rewrite->extra_permastructs as $permastructname => $permastruct ) {
 			if ( is_array( $permastruct ) ) {
-				$rewrite_rules_by_source[$permastructname] = $wp_rewrite->generate_rewrite_rules( $permastruct['struct'], $permastruct['ep_mask'], $permastruct['paged'], $permastruct['feed'], $permastruct['forcomments'], $permastruct['walk_dirs'], $permastruct['endpoints'] );
+				$rewrite_rules_by_source[ $permastructname ] = $wp_rewrite->generate_rewrite_rules( $permastruct['struct'], $permastruct['ep_mask'], $permastruct['paged'], $permastruct['feed'], $permastruct['forcomments'], $permastruct['walk_dirs'], $permastruct['endpoints'] );
 			} else {
-				$rewrite_rules_by_source[$permastructname] = $wp_rewrite->generate_rewrite_rules( $permastruct, EP_NONE );
+				$rewrite_rules_by_source[ $permastructname ] = $wp_rewrite->generate_rewrite_rules( $permastruct, EP_NONE );
 			}
 		}
 
 		// Apply the filters used in core just in case
-		foreach( $rewrite_rules_by_source as $source => $source_rules ) {
-			$rewrite_rules_by_source[$source] = apply_filters( $source . '_rewrite_rules', $source_rules );
+		foreach ( $rewrite_rules_by_source as $source => $source_rules ) {
+			$rewrite_rules_by_source[ $source ] = apply_filters( $source . '_rewrite_rules', $source_rules );
 			if ( 'post_tag' == $source ) {
 				$rewrite_rules_by_source[ $source ] = apply_filters( 'tag_rewrite_rules', $source_rules );
 			}
@@ -259,13 +259,12 @@ class Rewrite_Command extends WP_CLI_Command {
 		$rule_list = array();
 		foreach ( $rules as $match => $query ) {
 
-			if ( ! empty( $assoc_args['match'] )
-				&& ! preg_match( "!^$match!", trim( $assoc_args['match'], '/' ) ) ) {
-					continue;
-				}
+			if ( ! empty( $assoc_args['match'] ) && ! preg_match( "!^$match!", trim( $assoc_args['match'], '/' ) ) ) {
+				continue;
+			}
 
 			$source = 'other';
-			foreach( $rewrite_rules_by_source as $rules_source => $source_rules ) {
+			foreach ( $rewrite_rules_by_source as $rules_source => $source_rules ) {
 				if ( array_key_exists( $match, $source_rules ) ) {
 					$source = $rules_source;
 				}
@@ -307,8 +306,8 @@ class Rewrite_Command extends WP_CLI_Command {
 	 * to disk.
 	 */
 	private static function apache_modules() {
-		$mods = WP_CLI::get_config('apache_modules');
-		if ( !empty( $mods ) && !function_exists( 'apache_get_modules' ) ) {
+		$mods = WP_CLI::get_config( 'apache_modules' );
+		if ( ! empty( $mods ) && ! function_exists( 'apache_get_modules' ) ) {
 			global $is_apache;
 			$is_apache = true;
 
