@@ -84,7 +84,7 @@ class Rewrite_Command extends WP_CLI_Command {
 	 * Sets the post permalink structure to the specified pattern.
 	 *
 	 * To regenerate a .htaccess file with WP-CLI, you'll need to add
-	 * the mod_rewrite module to your [WP-CLI config](http://wp-cli.org/config/).
+	 * the mod_rewrite module to your [WP-CLI config](https://make.wordpress.org/cli/handbook/config/#config-files).
 	 * For example:
 	 *
 	 * ```
