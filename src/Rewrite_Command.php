@@ -1,5 +1,7 @@
 <?php
 
+use WP_CLI\Utils;
+
 /**
  * Lists or flushes the site's rewrite rules, updates the permalink structure.
  *
@@ -27,7 +29,7 @@
  *
  * @package wp-cli
  */
-// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound -- for back compat this class shouldn't be renamed.
+
 class Rewrite_Command extends WP_CLI_Command {
 
 	/**
@@ -57,17 +59,17 @@ class Rewrite_Command extends WP_CLI_Command {
 		// make sure we detect mod_rewrite if configured in apache_modules in config
 		self::apache_modules();
 
-		if ( \WP_CLI\Utils\get_flag_value( $assoc_args, 'hard' ) && ! in_array( 'mod_rewrite', (array) WP_CLI::get_config( 'apache_modules' ) ) ) {
+		if ( Utils\get_flag_value( $assoc_args, 'hard' ) && ! in_array( 'mod_rewrite', (array) WP_CLI::get_config( 'apache_modules' ), true ) ) {
 			WP_CLI::warning( 'Regenerating a .htaccess file requires special configuration. See usage docs.' );
 		}
 
-		if ( \WP_CLI\Utils\get_flag_value( $assoc_args, 'hard' ) && is_multisite() ) {
+		if ( Utils\get_flag_value( $assoc_args, 'hard' ) && is_multisite() ) {
 			WP_CLI::warning( "WordPress can't generate .htaccess file for a multisite install." );
 		}
 
 		self::check_skip_plugins_themes();
 
-		flush_rewrite_rules( \WP_CLI\Utils\get_flag_value( $assoc_args, 'hard' ) );
+		flush_rewrite_rules( Utils\get_flag_value( $assoc_args, 'hard' ) );
 
 		if ( ! get_option( 'rewrite_rules' ) ) {
 			WP_CLI::warning( "Rewrite rules are empty, possibly because of a missing permalink_structure option. Use 'wp rewrite list' to verify, or 'wp rewrite structure' to update permalink_structure." );
@@ -120,7 +122,7 @@ class Rewrite_Command extends WP_CLI_Command {
 			$blog_prefix = '/blog';
 		}
 
-		$permalink_structure = ( 'default' == $args[0] ) ? '' : $args[0];
+		$permalink_structure = ( 'default' === $args[0] ) ? '' : $args[0];
 
 		if ( ! empty( $permalink_structure ) ) {
 			$permalink_structure = preg_replace( '#/+#', '/', '/' . str_replace( '#', '', $permalink_structure ) );
@@ -158,12 +160,12 @@ class Rewrite_Command extends WP_CLI_Command {
 
 		// Launch a new process to flush rewrites because core expects flush
 		// to happen after rewrites are set
-		$new_assoc_args = array();
+		$new_assoc_args = [];
 		$cmd            = 'rewrite flush';
-		if ( \WP_CLI\Utils\get_flag_value( $assoc_args, 'hard' ) ) {
+		if ( Utils\get_flag_value( $assoc_args, 'hard' ) ) {
 			$cmd                   .= ' --hard';
 			$new_assoc_args['hard'] = true;
-			if ( ! in_array( 'mod_rewrite', (array) WP_CLI::get_config( 'apache_modules' ) ) ) {
+			if ( ! in_array( 'mod_rewrite', (array) WP_CLI::get_config( 'apache_modules' ), true ) ) {
 				WP_CLI::warning( 'Regenerating a .htaccess file requires special configuration. See usage docs.' );
 			}
 		}
@@ -218,21 +220,21 @@ class Rewrite_Command extends WP_CLI_Command {
 
 		$rules = get_option( 'rewrite_rules' );
 		if ( ! $rules ) {
-			$rules = array();
+			$rules = [];
 			WP_CLI::warning( 'No rewrite rules.' );
 		}
 
 		self::check_skip_plugins_themes();
 
-		$defaults   = array(
+		$defaults   = [
 			'source' => '',
 			'match'  => '',
 			'format' => 'table',
 			'fields' => 'match,query,source',
-		);
+		];
 		$assoc_args = array_merge( $defaults, $assoc_args );
 
-		$rewrite_rules_by_source             = array();
+		$rewrite_rules_by_source             = [];
 		$rewrite_rules_by_source['post']     = $wp_rewrite->generate_rewrite_rules( $wp_rewrite->permalink_structure, EP_PERMALINK );
 		$rewrite_rules_by_source['date']     = $wp_rewrite->generate_rewrite_rules( $wp_rewrite->get_date_permastruct(), EP_DATE );
 		$rewrite_rules_by_source['root']     = $wp_rewrite->generate_rewrite_rules( $wp_rewrite->root . '/', EP_ROOT );
@@ -252,15 +254,20 @@ class Rewrite_Command extends WP_CLI_Command {
 
 		// Apply the filters used in core just in case
 		foreach ( $rewrite_rules_by_source as $source => $source_rules ) {
-			// phpcs:ignore WordPress.NamingConventions,PrefixAllGlobals.DynamicHooknameFound
+			// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.DynamicHooknameFound -- Can't prefix dynamic hooks here, calling hooks for custom permastructs.
 			$rewrite_rules_by_source[ $source ] = apply_filters( $source . '_rewrite_rules', $source_rules );
-			if ( 'post_tag' == $source ) {
-				// phpcs:ignore WordPress.NamingConventions,PrefixAllGlobals.DynamicHooknameFound
-				$rewrite_rules_by_source[ $source ] = apply_filters( 'tag_rewrite_rules', $source_rules );
+			if ( 'post_tag' === $source ) {
+				if ( Utils\wp_version_compare( '3.1.0', '>=' ) ) {
+					// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- Calling native WordPress hook.
+					$rewrite_rules_by_source[ $source ] = apply_filters( 'post_tag_rewrite_rules', $source_rules );
+				} else {
+					// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- Calling native WordPress hook.
+					$rewrite_rules_by_source[ $source ] = apply_filters( 'tag_rewrite_rules', $source_rules );
+				}
 			}
 		}
 
-		$rule_list = array();
+		$rule_list = [];
 		foreach ( $rules as $match => $query ) {
 
 			if ( ! empty( $assoc_args['match'] ) && ! preg_match( "!^$match!", trim( $assoc_args['match'], '/' ) ) ) {
@@ -274,14 +281,14 @@ class Rewrite_Command extends WP_CLI_Command {
 				}
 			}
 
-			if ( ! empty( $assoc_args['source'] ) && $source != $assoc_args['source'] ) {
+			if ( ! empty( $assoc_args['source'] ) && $source !== $assoc_args['source'] ) {
 				continue;
 			}
 
 			$rule_list[] = compact( 'match', 'query', 'source' );
 		}
 
-		WP_CLI\Utils\format_items( $assoc_args['format'], $rule_list, explode( ',', $assoc_args['fields'] ) );
+		Utils\format_items( $assoc_args['format'], $rule_list, explode( ',', $assoc_args['fields'] ) );
 	}
 
 	/**
@@ -332,7 +339,7 @@ class Rewrite_Command extends WP_CLI_Command {
 	 * are unregistered, which may cause erroneous behavior.
 	 */
 	private static function check_skip_plugins_themes() {
-		$skipped = array();
+		$skipped = [];
 		if ( WP_CLI::get_config( 'skip-plugins' ) ) {
 			$skipped[] = 'plugins';
 		}
