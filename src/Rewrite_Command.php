@@ -237,7 +237,7 @@ class Rewrite_Command extends WP_CLI_Command {
 		if ( ! empty( $assoc_args['match'] ) ) {
 			if ( 0 === stripos( $assoc_args['match'], 'http://' )
 				|| 0 === stripos( $assoc_args['match'], 'https://' ) ) {
-				$bits = WP_CLI\Utils\parse_url( $assoc_args['match'] );
+				$bits                = WP_CLI\Utils\parse_url( $assoc_args['match'] );
 				$assoc_args['match'] = ( isset( $bits['path'] ) ? $bits['path'] : '' )
 					. ( isset( $bits['query'] ) ? '?' . $bits['query'] : '' );
 			}
