@@ -129,14 +129,14 @@ Feature: Manage WordPress rewrites
     Given a WP install
     And I run `wp rewrite structure /%year%/%monthnum%/%day%/%postname%/`
 
-    When I run `wp rewrite list --match=/2022/11/13/hello-world/ --format=csv`
+    When I run `wp rewrite list --match=/2022/11/13/hello-world/ --format=csv --fields=query,source`
     Then STDOUT should be CSV containing:
-      | match            | query                               | source   |
-      | ([0-9]{4})/([0-9]{1,2})/([0-9]{1,2})/([^/]+)(?:/([0-9]+))?/?$ | index.php?year=$matches[1]&monthnum=$matches[2]&day=$matches[3]&name=$matches[4]&page=$matches[5] | post |
-      | (.?.+?)(?:/([0-9]+))?/?$ | index.php?pagename=$matches[1]&page=$matches[2]           | page |
+      | query                               | source   |
+      | index.php?year=$matches[1]&monthnum=$matches[2]&day=$matches[3]&name=$matches[4]&page=$matches[5] | post |
+      | index.php?pagename=$matches[1]&page=$matches[2]           | page |
 
-    When I run `wp rewrite list --match=https://example.com/2022/11/13/hello-world/ --format=csv`
+    When I run `wp rewrite list --match=https://example.com/2022/11/13/hello-world/ --format=csv --fields=query,source`
     Then STDOUT should be CSV containing:
-      | match            | query                               | source   |
-      | ([0-9]{4})/([0-9]{1,2})/([0-9]{1,2})/([^/]+)(?:/([0-9]+))?/?$ | index.php?year=$matches[1]&monthnum=$matches[2]&day=$matches[3]&name=$matches[4]&page=$matches[5] | post |
-      | (.?.+?)(?:/([0-9]+))?/?$ | index.php?pagename=$matches[1]&page=$matches[2]           | page |
+      | query                               | source   |
+      | index.php?year=$matches[1]&monthnum=$matches[2]&day=$matches[3]&name=$matches[4]&page=$matches[5] | post |
+      | index.php?pagename=$matches[1]&page=$matches[2]           | page |
