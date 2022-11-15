@@ -124,3 +124,19 @@ Feature: Manage WordPress rewrites
       Warning: Some rewrite rules may be missing
       """
     And the return code should be 0
+
+  Scenario: Match as expected when full URL is provided
+    Given a WP install
+    And I run `wp rewrite structure /%year%/%monthnum%/%day%/%postname%/`
+
+    When I run `wp rewrite list --match=/2022/11/13/hello-world/ --format=csv --fields=query,source`
+    Then STDOUT should be CSV containing:
+      | query                               | source   |
+      | index.php?year=$matches[1]&monthnum=$matches[2]&day=$matches[3]&name=$matches[4]&page=$matches[5] | post |
+      | index.php?pagename=$matches[1]&page=$matches[2]           | page |
+
+    When I run `wp rewrite list --match=https://example.com/2022/11/13/hello-world/ --format=csv --fields=query,source`
+    Then STDOUT should be CSV containing:
+      | query                               | source   |
+      | index.php?year=$matches[1]&monthnum=$matches[2]&day=$matches[3]&name=$matches[4]&page=$matches[5] | post |
+      | index.php?pagename=$matches[1]&page=$matches[2]           | page |

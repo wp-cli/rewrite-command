@@ -234,6 +234,15 @@ class Rewrite_Command extends WP_CLI_Command {
 		];
 		$assoc_args = array_merge( $defaults, $assoc_args );
 
+		if ( ! empty( $assoc_args['match'] ) ) {
+			if ( 0 === stripos( $assoc_args['match'], 'http://' )
+				|| 0 === stripos( $assoc_args['match'], 'https://' ) ) {
+				$bits                = WP_CLI\Utils\parse_url( $assoc_args['match'] );
+				$assoc_args['match'] = ( isset( $bits['path'] ) ? $bits['path'] : '' )
+					. ( isset( $bits['query'] ) ? '?' . $bits['query'] : '' );
+			}
+		}
+
 		$rewrite_rules_by_source             = [];
 		$rewrite_rules_by_source['post']     = $wp_rewrite->generate_rewrite_rules( $wp_rewrite->permalink_structure, EP_PERMALINK );
 		$rewrite_rules_by_source['date']     = $wp_rewrite->generate_rewrite_rules( $wp_rewrite->get_date_permastruct(), EP_DATE );
