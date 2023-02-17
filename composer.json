@@ -39,9 +39,9 @@
         ]
     },
     "autoload": {
-        "psr-4": {
-            "": "src/"
-        },
+        "classmap": [
+            "src/"
+        ],
         "files": [
             "rewrite-command.php"
         ]
