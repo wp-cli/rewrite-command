@@ -359,7 +359,7 @@ class Rewrite_Command extends WP_CLI_Command {
 			return;
 		}
 		$skipped = implode( ' and ', $skipped );
-		WP_CLI::warning( sprintf( "Some rewrite rules may be missing because %s weren't loaded.", $skipped ) );
+		WP_CLI::warning( sprintf( "Some rewrite rules may be missing because %s weren't loaded by WP-CLI.", $skipped ) );
 	}
 }
 
