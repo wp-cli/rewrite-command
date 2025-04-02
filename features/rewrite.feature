@@ -53,7 +53,7 @@ Feature: Manage WordPress rewrites
     And STDOUT should be empty
 
     When I run `wp rewrite structure /%year%/%monthnum%/%day%/%postname%/`
-    Then I run `wp rewrite flush`
+    And I run `wp rewrite flush`
     Then STDOUT should be:
       """
       Success: Rewrite rules flushed.
