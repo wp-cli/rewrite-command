@@ -160,11 +160,9 @@ class Rewrite_Command extends WP_CLI_Command {
 
 		// Launch a new process to flush rewrites because core expects flush
 		// to happen after rewrites are set
-		$new_assoc_args = [];
-		$cmd            = 'rewrite flush';
+		$cmd = 'rewrite flush';
 		if ( Utils\get_flag_value( $assoc_args, 'hard' ) ) {
-			$cmd                   .= ' --hard';
-			$new_assoc_args['hard'] = true;
+			$cmd .= ' --hard';
 			if ( ! in_array( 'mod_rewrite', (array) WP_CLI::get_config( 'apache_modules' ), true ) ) {
 				WP_CLI::warning( 'Regenerating a .htaccess file requires special configuration. See usage docs.' );
 			}
