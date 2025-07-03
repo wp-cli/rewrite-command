@@ -126,11 +126,7 @@ class Rewrite_Command extends WP_CLI_Command {
 
 		if ( ! empty( $permalink_structure ) ) {
 			$permalink_structure = preg_replace( '#/+#', '/', '/' . str_replace( '#', '', $permalink_structure ) );
-			if ( $prefix && $blog_prefix ) {
-				$permalink_structure = $prefix . preg_replace( '#^/?index\.php#', '', $permalink_structure );
-			} else {
-				$permalink_structure = $blog_prefix . $permalink_structure;
-			}
+			$permalink_structure = $blog_prefix . $permalink_structure;
 		}
 		$wp_rewrite->set_permalink_structure( $permalink_structure );
 
@@ -168,6 +164,9 @@ class Rewrite_Command extends WP_CLI_Command {
 			}
 		}
 
+		/**
+		 * @var object{stdout: string, stderr: string, return_code: int} $process_run
+		 */
 		$process_run = WP_CLI::runcommand( $cmd );
 		if ( ! empty( $process_run->stderr ) ) {
 			// Strip "Warning: "
@@ -221,6 +220,10 @@ class Rewrite_Command extends WP_CLI_Command {
 			$rules = [];
 			WP_CLI::warning( 'No rewrite rules.' );
 		}
+
+		/**
+		 * @var array<string, string> $rules
+		 */
 
 		self::check_skip_plugins_themes();
 
@@ -333,6 +336,7 @@ class Rewrite_Command extends WP_CLI_Command {
 			// needed for get_home_path() and .htaccess location
 			$_SERVER['SCRIPT_FILENAME'] = ABSPATH;
 
+			// @phpstan-ignore function.inner
 			function apache_get_modules() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 				return WP_CLI::get_config( 'apache_modules' );
 			}
