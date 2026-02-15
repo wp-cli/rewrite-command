@@ -164,16 +164,7 @@ class Rewrite_Command extends WP_CLI_Command {
 			}
 		}
 
-		$process_run = WP_CLI::runcommand(
-			$cmd,
-			[
-				'return' => 'all',
-			]
-		);
-		if ( ! empty( $process_run->stderr ) ) {
-			// Strip "Warning: "
-			WP_CLI::warning( substr( $process_run->stderr, 9 ) );
-		}
+		WP_CLI::runcommand( $cmd );
 	}
 
 	/**
