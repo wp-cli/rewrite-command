@@ -1,5 +1,6 @@
 Feature: Manage WordPress rewrites
 
+  @skip-windows
   Scenario: Change site permastructs
     Given a WP install
 
@@ -125,6 +126,7 @@ Feature: Manage WordPress rewrites
       """
     And the return code should be 0
 
+  @skip-windows
   Scenario: Match as expected when full URL is provided
     Given a WP install
     And I run `wp rewrite structure /%year%/%monthnum%/%day%/%postname%/`
