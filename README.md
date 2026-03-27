@@ -3,7 +3,7 @@ wp-cli/rewrite-command
 
 Lists or flushes the site's rewrite rules, updates the permalink structure.
 
-[![Testing](https://github.com/wp-cli/rewrite-command/actions/workflows/testing.yml/badge.svg)](https://github.com/wp-cli/rewrite-command/actions/workflows/testing.yml)
+[![Testing](https://github.com/wp-cli/rewrite-command/actions/workflows/testing.yml/badge.svg)](https://github.com/wp-cli/rewrite-command/actions/workflows/testing.yml) [![Code Coverage](https://codecov.io/gh/wp-cli/rewrite-command/branch/main/graph/badge.svg)](https://codecov.io/gh/wp-cli/rewrite-command/tree/main)
 
 Quick links: [Using](#using) | [Installing](#installing) | [Contributing](#contributing) | [Support](#support)
 
